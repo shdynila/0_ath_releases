@@ -1,0 +1,4 @@
+baseURL = 'https://shdynila.github.io/0_ath_releases/'
+languageCode = 'en-us'
+title = '0ath - Game Client Download'
+disableKinds = ["taxonomy", "term", "section"]
