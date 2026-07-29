@@ -21,7 +21,7 @@
 
         <section class="downloads">
             <!-- Windows -->
-            <a href="https://github.com/shdynila/0_ath_releases/releases/latest/download/0ath_client_windows.zip" class="download-card">
+            <div class="download-card" onclick="selectPlatform('windows')">
                 <div class="icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -31,10 +31,10 @@
                 </div>
                 <h2>Windows</h2>
                 <p>Windows 10/11 (64-bit)</p>
-            </a>
+            </div>
 
             <!-- macOS Intel -->
-            <a href="https://github.com/shdynila/0_ath_releases/releases/latest/download/0ath_client_mac-intel.zip" class="download-card">
+            <div class="download-card" onclick="selectPlatform('mac-intel')">
                 <div class="icon">
                     <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
                         <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-1.15 2.14-.38 3.79.46 4.65 1.76-3.83 2.14-3.02 7.21 1.09 8.87-.85 1.96-2.12 3.65-4.32 2.69zm-3.02-14.8c.2-2.45 2.37-4.32 4.41-4.48.51 2.51-1.63 4.88-4.41 4.48z"/>
@@ -42,10 +42,10 @@
                 </div>
                 <h2>macOS (Intel)</h2>
                 <p>macOS 11+</p>
-            </a>
+            </div>
 
             <!-- macOS Silicon -->
-            <a href="https://github.com/shdynila/0_ath_releases/releases/latest/download/0ath_client_mac-silicon.zip" class="download-card">
+            <div class="download-card" onclick="selectPlatform('mac-silicon')">
                 <div class="icon">
                     <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
                         <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-1.15 2.14-.38 3.79.46 4.65 1.76-3.83 2.14-3.02 7.21 1.09 8.87-.85 1.96-2.12 3.65-4.32 2.69zm-3.02-14.8c.2-2.45 2.37-4.32 4.41-4.48.51 2.51-1.63 4.88-4.41 4.48z"/>
@@ -53,10 +53,10 @@
                 </div>
                 <h2>macOS (Silicon)</h2>
                 <p>M1, M2, M3 Chips</p>
-            </a>
+            </div>
 
             <!-- Linux -->
-            <a href="https://github.com/shdynila/0_ath_releases/releases/latest/download/0ath_client_linux.zip" class="download-card">
+            <div class="download-card" onclick="selectPlatform('linux')">
                 <div class="icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="4 17 10 11 4 5"></polyline>
@@ -65,12 +65,115 @@
                 </div>
                 <h2>Linux</h2>
                 <p>Ubuntu 20.04+ (amd64)</p>
-            </a>
+            </div>
+        </section>
+
+        <!-- Instructions Panel (Hidden by Default) -->
+        <section id="instructions-panel" class="instructions-panel" style="display: none;">
+            <h2 id="inst-title">Installation Instructions</h2>
+            <p id="inst-desc">To bypass OS security warnings, install the game via terminal.</p>
+            
+            <div class="code-container">
+                <code id="inst-code"></code>
+                <button class="copy-btn" onclick="copyCode()" id="copy-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+
+            <div class="manual-download">
+                <p>Alternatively, you can inspect or download the script manually:</p>
+                <button class="download-btn" onclick="downloadScriptManually()">Download Script</button>
+            </div>
         </section>
 
         <footer class="footer">
             <p><a href="https://github.com/shdynila/0_ath_releases/issues" target="_blank">Report an Issue</a></p>
         </footer>
     </main>
+
+    <script>
+        const instructions = {
+            'windows': {
+                title: 'Install on Windows',
+                code: 'iwr -useb https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.ps1 | iex',
+                scriptUrl: 'https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.ps1',
+                scriptName: 'run.ps1'
+            },
+            'mac-intel': {
+                title: 'Install on macOS (Intel)',
+                code: 'curl -sSL https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.sh | bash',
+                scriptUrl: 'https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.sh',
+                scriptName: 'run.sh'
+            },
+            'mac-silicon': {
+                title: 'Install on macOS (Silicon)',
+                code: 'curl -sSL https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.sh | bash',
+                scriptUrl: 'https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.sh',
+                scriptName: 'run.sh'
+            },
+            'linux': {
+                title: 'Install on Linux',
+                code: 'curl -sSL https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.sh | bash',
+                scriptUrl: 'https://raw.githubusercontent.com/shdynila/0_ath_client/main/run.sh',
+                scriptName: 'run.sh'
+            }
+        };
+
+        let currentPlatform = '';
+
+        function selectPlatform(platform) {
+            currentPlatform = platform;
+            
+            // Update active state on cards
+            document.querySelectorAll('.download-card').forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Update panel content
+            const data = instructions[platform];
+            document.getElementById('inst-title').innerText = data.title;
+            document.getElementById('inst-code').innerText = data.code;
+            
+            // Show panel
+            const panel = document.getElementById('instructions-panel');
+            panel.style.display = 'block';
+            
+            // Reset copy button
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy';
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById('inst-code').innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const copyBtn = document.getElementById('copy-btn');
+                copyBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
+            });
+        }
+
+        async function downloadScriptManually() {
+            if (!currentPlatform) return;
+            const data = instructions[currentPlatform];
+            
+            try {
+                const response = await fetch(data.scriptUrl);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = data.scriptName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error('Failed to download script:', err);
+                window.open(data.scriptUrl, '_blank');
+            }
+        }
+    </script>
 </body>
 </html>
