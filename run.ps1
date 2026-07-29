@@ -19,10 +19,10 @@ function Launch-Game {
             
             if ($userId) {
                 Write-Host "Session detected! Launching game client..."
-                $args = @("-login-id", $userId)
-                if ($jwt) { $args += "-jwt", $jwt }
+                $cmdArgs = @("-login-id", $userId)
+                if ($jwt) { $cmdArgs += "-jwt", $jwt }
                 
-                Start-Process -FilePath $clientBin -ArgumentList $args -PassThru -Wait -NoNewWindow
+                Start-Process -FilePath $clientBin -ArgumentList $cmdArgs -PassThru -Wait -NoNewWindow
             }
             break
         } else {
