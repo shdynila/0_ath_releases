@@ -4,6 +4,33 @@ $versionFile = "$installDir\version.txt"
 $fileName = "0ath_client_windows.zip"
 $downloadUrl = "https://github.com/shdynila/0_ath_releases/releases/latest/download/$fileName"
 
+function Launch-Game {
+    while ($true) {
+        $proc = Start-Process -FilePath $clientBin -PassThru -Wait -NoNewWindow
+        
+        $sessionPath = "$installDir\session.json"
+        if (Test-Path -Path $sessionPath) {
+            $session = Get-Content -Path $sessionPath | ConvertFrom-Json
+            Remove-Item -Path $sessionPath -Force
+            
+            $userId = $session.username
+            if (-not $userId) { $userId = $session.userId }
+            $jwt = $session.jwt
+            
+            if ($userId) {
+                Write-Host "Session detected! Launching game client..."
+                $args = @("-login-id", $userId)
+                if ($jwt) { $args += "-jwt", $jwt }
+                
+                Start-Process -FilePath $clientBin -ArgumentList $args -PassThru -Wait -NoNewWindow
+            }
+            break
+        } else {
+            break
+        }
+    }
+}
+
 Write-Host "Checking for updates..."
 try {
     $releaseApi = "https://api.github.com/repos/shdynila/0_ath_releases/releases/latest"
@@ -19,7 +46,7 @@ if (Test-Path -Path $versionFile) {
 
 if ((Test-Path -Path $clientBin) -and ($localVersion -eq $latestRelease) -and ($latestRelease -ne "unknown")) {
     Write-Host "0_ath Client is up to date ($localVersion). Launching..."
-    Start-Process $clientBin
+    Launch-Game
     exit
 }
 
@@ -42,4 +69,4 @@ if ($latestRelease -ne "unknown") {
 }
 
 Write-Host "Update complete! Launching game..."
-Start-Process $clientBin
+Launch-Game
