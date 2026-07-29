@@ -6,7 +6,7 @@ $downloadUrl = "https://github.com/shdynila/0_ath_releases/releases/latest/downl
 
 function Launch-Game {
     while ($true) {
-        $proc = Start-Process -FilePath $clientBin -PassThru -Wait -NoNewWindow
+        $proc = Start-Process -FilePath $clientBin -WorkingDirectory $installDir -PassThru -Wait -NoNewWindow
         
         $sessionPath = "$installDir\session.json"
         if (Test-Path -Path $sessionPath) {
@@ -22,7 +22,7 @@ function Launch-Game {
                 $cmdArgs = @("-login-id", $userId)
                 if ($jwt) { $cmdArgs += "-jwt", $jwt }
                 
-                Start-Process -FilePath $clientBin -ArgumentList $cmdArgs -PassThru -Wait -NoNewWindow
+                Start-Process -FilePath $clientBin -ArgumentList $cmdArgs -WorkingDirectory $installDir -PassThru -Wait -NoNewWindow
             }
             break
         } else {
