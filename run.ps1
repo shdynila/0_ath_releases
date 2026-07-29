@@ -8,7 +8,10 @@ function Launch-Game {
     while ($true) {
         $proc = Start-Process -FilePath $clientBin -WorkingDirectory $installDir -PassThru -Wait -NoNewWindow
         
-        $sessionPath = "$installDir\session.json"
+        $sessionPath = ".\session.json"
+        if (-not (Test-Path -Path $sessionPath)) {
+            $sessionPath = "$installDir\session.json"
+        }
         if (Test-Path -Path $sessionPath) {
             $session = Get-Content -Path $sessionPath | ConvertFrom-Json
             Remove-Item -Path $sessionPath -Force
